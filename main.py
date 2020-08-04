@@ -53,15 +53,15 @@ def home_post():
     if isinstance(pubsub_message, dict) and 'frequency' in pubsub_message:
 
         # get 'data' param from pubsub payload to determine how far in time we need to go back
-        frequency = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
+        frequency = pubsub_message['data'].decode('utf-8').strip()
         time_after = time.time() - (int(frequency) * 60)  # 'frequency' is provided in minutes, converting to seconds
 
         compile_and_publish_requests(time_after)
 
         return json.jsonify({}), 204
     else:
-        msg = 'missing "frequency" parameter'
-        return f'Bad Request: {msg}', 400
+        msg = 'error when processing request'
+        return f'Bad Request: {msg}', 500
 
 
 if __name__ == '__main__':
