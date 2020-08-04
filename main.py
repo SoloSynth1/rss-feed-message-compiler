@@ -50,10 +50,10 @@ def home_post():
 
     pubsub_message = envelope['message']
 
-    if isinstance(pubsub_message, dict) and 'frequency' in pubsub_message:
+    if isinstance(pubsub_message, dict) and 'data' in pubsub_message:
 
         # get 'data' param from pubsub payload to determine how far in time we need to go back
-        frequency = pubsub_message['data'].decode('utf-8').strip()
+        frequency = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
         time_after = time.time() - (int(frequency) * 60)  # 'frequency' is provided in minutes, converting to seconds
 
         compile_and_publish_requests(time_after)
