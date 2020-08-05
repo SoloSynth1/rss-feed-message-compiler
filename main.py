@@ -31,7 +31,11 @@ def compile_feed_space_map(all_subscriptions):
         feed = subscription['feed']
         if feed not in feed_space_map:
             feed_space_map[feed] = []
-        feed_space_map[feed].append(subscription['space'])
+        space_obj = {
+            "space": subscription['space'],
+            "feedName": subscription['name'],
+        }
+        feed_space_map[feed].append(space_obj)
     return feed_space_map
 
 
